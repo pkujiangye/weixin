@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wx client</title>
+    <style>
+        li > img{
+            width: 32px;
+        }
+    </style>
+</head>
+<body>
+<ul id="messages">
+
+</ul>
+<script type="text/javascript">
+    var msglist = document.getElementById('messages');
+    var ws = new WebSocket('ws://112.126.66.220:9902/');
+    ws.onmessage = function(evt)
+    {
+        console.log(evt.data)
+        var msg = JSON.parse(evt.data);
+        var content = msg.xml.Content[0];
+        msg.user = msg.user || {};
+        var userName = msg.user.nickname;
+        var headimg = msg.user.headimgurl;
+        var oLi = document.createElement('li');
+        oLi.innerHTML = '<img src="'+headimg+'">'+ userName + ':' + content;
+        msglist.appendChild(oLi);
+    };
+</script>
+</body>
+</html>
